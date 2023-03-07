@@ -1,15 +1,17 @@
 import matplotlib.pyplot as plt
-import numpy as np
+import numpy as np, pandas as pd
 from LoadData import load_rating_data, spilt_rating_dat
 from sklearn.model_selection import train_test_split
 from ProbabilisticMatrixFactorization import PMF
 
 if __name__ == "__main__":
-    file_path = "data/ml-100k/u.data"
     pmf = PMF()
-    pmf.set_params({"num_feat": 10, "epsilon": 1, "_lambda": 0.1, "momentum": 0.8, "maxepoch": 100, "num_batches": 100,
-                    "batch_size": 1000})
-    ratings = load_rating_data(file_path)
+    total = 27753444
+    batch_size = 10000
+    pmf.set_params({"num_feat": 20, "epsilon": 1, "_lambda": 0.1, "momentum": 0.8, "maxepoch": 100, "num_batches": int(np.ceil(total / batch_size)),
+                    "batch_size": batch_size})
+    ratings = pd.read_csv("data/ml-latest/ratings.csv")
+    ratings = ratings[['userId', 'movieId', 'rating']].values
     print(len(np.unique(ratings[:, 0])), len(np.unique(ratings[:, 1])), pmf.num_feat)
     train, test = train_test_split(ratings, test_size=0.2)  # spilt_rating_dat(ratings)
     pmf.fit(train, test)

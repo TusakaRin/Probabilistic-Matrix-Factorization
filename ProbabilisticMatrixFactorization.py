@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-import numpy as np
+import mkl; mkl.set_num_threads(96)
+import numpy as np, tqdm
 
 
 class PMF(object):
@@ -49,7 +50,7 @@ class PMF(object):
             np.random.shuffle(shuffled_order)  # 用于将一个列表中的元素打乱
 
             # Batch update
-            for batch in range(self.num_batches):  # 每次迭代要使用的数据量
+            for batch in tqdm.tqdm(range(self.num_batches)):  # 每次迭代要使用的数据量
                 # print "epoch %d batch %d" % (self.epoch, batch+1)
 
                 test = np.arange(self.batch_size * batch, self.batch_size * (batch + 1))

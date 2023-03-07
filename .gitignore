@@ -88,3 +88,6 @@ ENV/
 # Rope project settings
 .ropeproject
 .idea/
+
+data/ml-latest/*
+data/ml-latest.zip.1
