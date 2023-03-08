@@ -24,7 +24,7 @@ from torch import nn
 # Large dataset
 ratings = pd.read_csv("data/ml-latest/ratings.csv")
 ratings = ratings[['userId', 'movieId', 'rating']]
-
+# large dataset mean rmse: 1.06635
 
 # In[4]:
 
@@ -58,9 +58,9 @@ train_ratings, test_ratings = train_test_split(ratings, test_size=0.2)
 
 
 train_X = train_ratings[['userId', 'movieId']].values
-train_y = train_ratings['rating'].values.astype('float64')
+train_y = train_ratings['rating'].values.astype('float16')
 test_X = test_ratings[['userId', 'movieId']].values
-test_y = test_ratings['rating'].values.astype('float64')
+test_y = test_ratings['rating'].values.astype('float16')
 
 
 # In[9]:
@@ -94,10 +94,10 @@ data_iter = load_array((train_X, train_y), batch_size)
 # model
 num_user = len(uid2user)
 num_item = len(iid2item)
-num_feat = 10
+num_feat = 75
 
-w_Item = torch.normal(0, 0.1, (num_item, num_feat), device='cuda', requires_grad=True)
-w_User = torch.normal(0, 0.1, (num_user, num_feat), device='cuda', requires_grad=True)
+w_Item = torch.normal(0, 0.5, (num_item, num_feat), device='cuda', requires_grad=True, dtype=torch.float16)
+w_User = torch.normal(0, 0.5, (num_user, num_feat), device='cuda', requires_grad=True, dtype=torch.float16)
 
 
 # In[41]:
